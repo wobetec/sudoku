@@ -1,0 +1,28 @@
+{
+  "name": "sudoku",
+  "version": "1.0.0",
+  "description": "Final project of Havard CS50 2022",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wobetec/sudoku.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wobetec/sudoku/issues"
+  },
+  "homepage": "https://github.com/wobetec/sudoku#readme",
+  "dependencies": {
+    "next": "^13.0.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
