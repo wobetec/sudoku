@@ -1,0 +1,239 @@
+@import "variables"
+
+
+.Sudoku
+    width: 100%
+    display: flex
+    align-items: center
+    justify-content: space-around
+
+.Board
+    display: flex
+    flex-direction: column
+    background-color: $color-section
+    padding: 10px
+    border-radius: 20px
+    
+    .row
+        display: flex
+        flex-direction: row
+
+        &:nth-child(2)
+            .Tpt
+                border-top: 10px solid $color-2
+                border-bottom: 10px solid $color-2
+
+        .Tpt
+            display: flex
+            flex-direction: column
+            padding: 10px
+
+            &:nth-child(2)
+                border-left: 10px solid $color-2
+                border-right: 10px solid $color-2
+            
+            $little-border: 4px
+            $remove-border: 16px
+            .row-tpt
+                display: flex
+                flex-direction: row
+
+                &:nth-child(2)
+                    .numberField
+                        border-top: $little-border solid $color-2
+                        border-bottom: $little-border solid $color-2
+
+                .numberField
+                    position: relative
+                    -webkit-user-select: none
+                    -ms-user-select: none
+                    user-select: none
+
+                    &::after, &::before
+                        z-index: 1000
+                        background-color: $color-section
+                        content: ""
+                        display: block
+                        height: $remove-border
+                        position: absolute
+                        width: $remove-border
+
+                    $move-border: - calc(($little-border + $remove-border)/2) 
+                    &::after 
+                        bottom: $move-border
+                        right: $move-border
+                        
+                    &::before 
+                        top: $move-border
+                        left: $move-border
+                        
+
+                    &:nth-child(2)
+                        border-left: $little-border solid $color-2
+                        border-right: $little-border solid $color-2
+
+                    .number
+                        margin: 8px
+                        display: flex
+                        align-items: center
+                        justify-content: center 
+                        border-radius: 22px
+                        font-size: 40px 
+                        width: 44px
+                        height: 44px
+
+                    .empty 
+                        background-color: transparent
+
+                    .initial
+                        background-color: $color-1
+
+                    .selected
+                        background-color: $color-2 !important
+
+
+
+
+.menu
+    display: flex
+    flex-direction: column
+    justify-content: space-around
+
+.Keyboard
+    display: flex
+    flex-direction: column
+    background-color: $color-section
+    padding: 10px
+    border-radius: 20px
+
+    .keyboard-numbers
+        display: flex
+        flex-direction: column
+        padding: 10px
+
+        $little-border: 4px
+        $remove-border: 16px
+        .row-tpt
+            display: flex
+            flex-direction: row
+
+            &:nth-child(2)
+                .numberField
+                    border-top: $little-border solid $color-2
+                    border-bottom: $little-border solid $color-2
+
+            .numberField
+                position: relative
+                -webkit-user-select: none
+                -ms-user-select: none
+                user-select: none
+
+                &::after, &::before
+                    z-index: 1000
+                    background-color: $color-section
+                    content: ""
+                    display: block
+                    height: $remove-border
+                    position: absolute
+                    width: $remove-border
+
+                $move-border: - calc(($little-border + $remove-border)/2) 
+                &::after 
+                    bottom: $move-border
+                    right: $move-border
+                    
+                &::before 
+                    top: $move-border
+                    left: $move-border
+                    
+
+                &:nth-child(2)
+                    border-left: $little-border solid $color-2
+                    border-right: $little-border solid $color-2
+
+                .number
+                    margin: 8px
+                    display: flex
+                    flex-direction: column
+                    align-items: center
+                    justify-content: center
+                    background-color: $color-1  
+                    border-radius: 22px
+                    font-size: 30px 
+                    width: 44px
+                    height: 44px
+
+                    * 
+                        font-size: 12px
+
+                    
+                
+
+    .game-options
+        display: flex
+        flex-direction: column
+        padding: 10px
+
+        .row-tpt
+            display: flex
+            flex-direction: row
+            width: 100%
+            justify-content: space-between
+
+            .numberField
+                position: relative
+                -webkit-user-select: none
+                -ms-user-select: none
+                user-select: none
+
+                .number
+                    margin: 8px
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    background-color: $color-1  
+                    border-radius: 22px
+                    font-size: 25px 
+                    width: 44px
+                    height: 44px
+
+
+.GameOptions
+    display: flex
+    flex-direction: column
+    background-color: $color-section
+    padding: 10px
+    border-radius: 20px
+    margin-bottom: 30px
+
+    select
+        background-color: $color-1
+        height: 40px
+        font-size: 30px
+
+
+@media screen and (max-width: 768px)
+
+    .Sudoku
+        flex-direction: column
+        align-items: center
+        justify-content: center
+
+    .Board
+        transform: scale(0.6)
+
+    .menu
+        flex-direction: column-reverse
+
+    
+    .GameOptions
+        margin-top: 30px
+        margin-bottom: 0
+
+    .Keyboard
+        flex-direction: row
+
+        .game-options
+            .row-tpt
+                flex-direction: column
+                height: 100%
