@@ -66,10 +66,15 @@ export default function Board(props){
     
         if(cell.value != null && cell.initial){
             classList += " initial"
+            if(cell.value == props.marked){
+                classList += " marked"
+            }
         }else if(cell.value != null){
             classList = classList
             if(cell.position[0] == props.selected[0] && cell.position[1] == props.selected[1]){
                 classList += " selected"
+            }else if(cell.value == props.marked){
+                classList += " marked"
             }
         }else{
             classList += " empty"
@@ -81,10 +86,29 @@ export default function Board(props){
         return (
             <div className="numberField" onClick={ (e)=>{
                 if(!cell.initial){
-                    if(e.target.classList.contains("selected")){
-                        props.setSelected([-1, -1])
+                    if(props.keyboardSelected != -1 && props.selected[0] == -1){
+                        let newGame = JSON.parse(JSON.stringify(props.game))
+                        if(newGame[cell.position[0]][cell.position[1]].value == props.keyboardSelected){
+                            newGame[cell.position[0]][cell.position[1]].value = null
+                        }else{
+                            newGame[cell.position[0]][cell.position[1]].value = props.keyboardSelected
+                        }
+                        props.setGame(newGame)
                     }else{
-                        props.setSelected(cell.position)
+                        if(e.target.classList.contains("selected")){
+                            props.setKeyboardSelected(-1)
+                            props.setSelected([-1, -1])
+                        }else{
+                            props.setSelected(cell.position)
+                            props.setKeyboardSelected(cell.value)
+                        }
+                    }
+                }else{
+                    props.setSelected([-1, -1])
+                    if(cell.value == props.marked){
+                        props.setKeyboardSelected(-1)
+                    }else{
+                        props.setKeyboardSelected(cell.value)
                     }
                 }
             }}>
@@ -93,7 +117,6 @@ export default function Board(props){
                 </div>
             </div>
         )
-        
     }
 }
 

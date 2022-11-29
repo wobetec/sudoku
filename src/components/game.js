@@ -34,6 +34,27 @@ export default function Sudoku(){
         return game
     }
 
+    function checkEnd(nowGame){
+        for(let i = 0; i < 9; i++){
+            for(let j = 0; j < 9; j++){
+                if(nowGame[i][j].value == null){
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    function getMarked(game, selected, keyboardSelected) {
+        if(keyboardSelected != -1){
+            return keyboardSelected
+        }else if(selected[0] != -1 && selected[1] != -1){
+            return game[selected[0]][selected[1]].value
+        }else{
+            return -1
+        }
+    }
+
     var initial = [
         [4, 7, 9, 0, 1, 2, 0, 0, 0],
         [0, 3, 0, 6, 7, 0, 0, 1, 0],
@@ -46,16 +67,25 @@ export default function Sudoku(){
         [8, 0, 1, 5, 2, 0, 4, 0, 0]
     ]
 
+
     const [game, setGame] = useState(getGame(initial))
     const [selected, setSelected] = useState([-1, -1])
-    
+    const [keyboardSelected, setKeyboardSelected] = useState(-1)
+    const [subscribe, setSubscribe] = useState(false)
 
+    const marked = getMarked(game, selected, keyboardSelected)
+    console.log(selected)
+    
     useEffect(()=>{
         function handle(e){
             if(/^[1-9]$/i.test(e.key)){
                 if(selected[0] != -1 && selected[1] != -1){
                     let newGame = JSON.parse(JSON.stringify(game))
-                    newGame[selected[0]][selected[1]].value = e.key
+                    if(newGame[selected[0]][selected[1]].value == e.key){
+                        newGame[selected[0]][selected[1]].value = null
+                    }else{
+                        newGame[selected[0]][selected[1]].value = e.key
+                    }
                     setGame(newGame)
                 }
             }else if(e.key == "Delete" || e.key == "Backspace"){
@@ -75,10 +105,10 @@ export default function Sudoku(){
 
     return (
         <div className="Sudoku">
-            <Board game={game} setSelected={setSelected} selected={selected} test="a"/>
+            <Board game={game} setGame={setGame} setSelected={setSelected} selected={selected} marked={marked} keyboardSelected={keyboardSelected} setKeyboardSelected={setKeyboardSelected}/>
             <div className="menu">
                 <GameOptions />
-                <Keyboard game={game}/>
+                <Keyboard game={game} selected={selected} keyboardSelected={keyboardSelected} setKeyboardSelected={setKeyboardSelected} subscribe={subscribe} setSubscribe={setSubscribe} />
             </div>
         </div>
     )

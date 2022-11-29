@@ -10,9 +10,9 @@
 .Board
     display: flex
     flex-direction: column
-    background-color: $color-section
-    padding: 10px
-    border-radius: 20px
+
+    $main-border-color: $color-draw
+    $main-border-width: 3px
     
     .row
         display: flex
@@ -20,28 +20,29 @@
 
         &:nth-child(2)
             .Tpt
-                border-top: 10px solid $color-2
-                border-bottom: 10px solid $color-2
+                border-top: $main-border-width solid $main-border-color
+                border-bottom: $main-border-width solid $main-border-color
 
         .Tpt
             display: flex
             flex-direction: column
-            padding: 10px
+            padding: 5px
 
             &:nth-child(2)
-                border-left: 10px solid $color-2
-                border-right: 10px solid $color-2
+                border-left: $main-border-width solid $main-border-color
+                border-right: $main-border-width solid $main-border-color
             
-            $little-border: 4px
-            $remove-border: 16px
+            $little-border: 2px
+            $remove-border: 8px
+            $little-border-color: $color-circles
             .row-tpt
                 display: flex
                 flex-direction: row
 
                 &:nth-child(2)
                     .numberField
-                        border-top: $little-border solid $color-2
-                        border-bottom: $little-border solid $color-2
+                        border-top: $little-border solid $little-border-color
+                        border-bottom: $little-border solid $little-border-color
 
                 .numberField
                     position: relative
@@ -51,7 +52,7 @@
 
                     &::after, &::before
                         z-index: 1000
-                        background-color: $color-section
+                        background-color: $color-background
                         content: ""
                         display: block
                         height: $remove-border
@@ -69,29 +70,39 @@
                         
 
                     &:nth-child(2)
-                        border-left: $little-border solid $color-2
-                        border-right: $little-border solid $color-2
-
+                        border-left: $little-border solid $little-border-color
+                        border-right: $little-border solid $little-border-color
+                    
+                    $number-radius: 22px
                     .number
-                        margin: 8px
+                        margin: 2px
                         display: flex
                         align-items: center
                         justify-content: center 
-                        border-radius: 22px
-                        font-size: 40px 
-                        width: 44px
-                        height: 44px
+                        border-radius: $number-radius
+                        font-size: calc($number-radius * 1.9) 
+                        width: calc($number-radius * 2)
+                        height: calc($number-radius * 2)
+                        color: $color-out-number-text
 
                     .empty 
                         background-color: transparent
 
                     .initial
-                        background-color: $color-1
+                        background-color: $color-circles 
+                        color: $color-circle-text 
 
                     .selected
-                        background-color: $color-2 !important
+                        background-color: $color-circle-selected !important 
+                        color: $color-background 
+                    
+                    .marked
+                        background-color: $color-circle-marked !important 
+                        color: $color-background !important 
 
-
+                    .wrong
+                        background-color: $color-circle-wrong 
+                        color: $color-background 
 
 
 .menu
@@ -99,10 +110,10 @@
     flex-direction: column
     justify-content: space-around
 
+
 .Keyboard
     display: flex
     flex-direction: column
-    background-color: $color-section
     padding: 10px
     border-radius: 20px
 
@@ -111,63 +122,15 @@
         flex-direction: column
         padding: 10px
 
-        $little-border: 4px
-        $remove-border: 16px
         .row-tpt
             display: flex
             flex-direction: row
 
-            &:nth-child(2)
-                .numberField
-                    border-top: $little-border solid $color-2
-                    border-bottom: $little-border solid $color-2
-
             .numberField
-                position: relative
-                -webkit-user-select: none
-                -ms-user-select: none
-                user-select: none
-
-                &::after, &::before
-                    z-index: 1000
-                    background-color: $color-section
-                    content: ""
-                    display: block
-                    height: $remove-border
-                    position: absolute
-                    width: $remove-border
-
-                $move-border: - calc(($little-border + $remove-border)/2) 
-                &::after 
-                    bottom: $move-border
-                    right: $move-border
-                    
-                &::before 
-                    top: $move-border
-                    left: $move-border
-                    
-
-                &:nth-child(2)
-                    border-left: $little-border solid $color-2
-                    border-right: $little-border solid $color-2
-
                 .number
-                    margin: 8px
-                    display: flex
-                    flex-direction: column
-                    align-items: center
-                    justify-content: center
-                    background-color: $color-1  
-                    border-radius: 22px
-                    font-size: 30px 
-                    width: 44px
-                    height: 44px
-
                     * 
                         font-size: 12px
 
-                    
-                
 
     .game-options
         display: flex
@@ -180,36 +143,47 @@
             width: 100%
             justify-content: space-between
 
-            .numberField
-                position: relative
-                -webkit-user-select: none
-                -ms-user-select: none
-                user-select: none
+    .numberField
+        position: relative
+        -webkit-user-select: none
+        -ms-user-select: none
+        user-select: none
 
-                .number
-                    margin: 8px
-                    display: flex
-                    align-items: center
-                    justify-content: center
-                    background-color: $color-1  
-                    border-radius: 22px
-                    font-size: 25px 
-                    width: 44px
-                    height: 44px
+        $number-radius: 20px
+        .number
+            margin: 8px
+            display: flex
+            flex-direction: column
+            align-items: center
+            justify-content: center 
+            border-radius: calc($number-radius * 1.5)
+            font-size: calc($number-radius * 1.8) 
+            width: calc($number-radius * 3)
+            height: calc($number-radius * 3)
+            border: 1px solid $color-circle-text
 
+        .selected
+            background-color: $color-circle-selected !important
+            color: $color-background !important
+
+            *
+                color: $color-background !important
 
 .GameOptions
     display: flex
     flex-direction: column
-    background-color: $color-section
     padding: 10px
-    border-radius: 20px
     margin-bottom: 30px
 
+    $select-size: 20px
     select
-        background-color: $color-1
-        height: 40px
-        font-size: 30px
+        border-radius: calc($select-size / 2)
+        background-color: $color-circles
+        height: $select-size
+        font-size: calc($select-size*0.7)
+        text-align: center
+        outline: none
+        border: 1px solid $color-circle-text
 
 
 @media screen and (max-width: 768px)
@@ -219,11 +193,16 @@
         align-items: center
         justify-content: center
 
-    .Board
-        transform: scale(0.6)
-
     .menu
         flex-direction: column-reverse
+
+    .Board
+        $small-number-radius: 14px
+        .number
+            border-radius: $small-number-radius !important
+            font-size: calc($small-number-radius * 1.9) !important
+            width: calc($small-number-radius * 2) !important
+            height: calc($small-number-radius * 2) !important
 
     
     .GameOptions

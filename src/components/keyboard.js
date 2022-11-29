@@ -40,15 +40,29 @@ export default function Keyboard(props){
                             <FiDelete/>
                         </div>
                     </div>
-                    {/* <div className="numberField">
+                    <div className="numberField">
                         <div className="number">
                             <BiUndo/>
                         </div>
-                    </div> */}
-                    <div className="numberField">
-                        <div className="number">
-                            <FaPencilAlt/>
-                        </div>
+                    </div> 
+                    <div className="numberField" onClick={(e)=>{
+                        console.log(props.subscribe)
+                        if(props.subscribe){
+                            props.setSubscribe(false)
+                        }else{
+                            props.setSubscribe(true)
+                        }
+                    }}> 
+                        {
+                            (props.subscribe)?
+                            <div className="number selected">
+                                <FaPencilAlt/>
+                            </div>
+                            :
+                            <div className="number">
+                                <FaPencilAlt/>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -66,17 +80,31 @@ export default function Keyboard(props){
         )
     }
 
+
     function NumberField(cell){
             
         let classList = "number"
+
+        if(props.keyboardSelected == cell){
+            classList += " selected"
+        }
         
         return (
             <div className="numberField">
                 <div className={classList} onClick={(e)=>{
-                    document.dispatchEvent(new KeyboardEvent("keydown", {"key": cell}))
+                    if(props.selected[0] != -1 && props.selected[1] != -1){
+                        document.dispatchEvent(new KeyboardEvent("keydown", {"key": cell}))
+                    }else{
+                        if(e.target.classList.contains("selected")){
+                            props.setKeyboardSelected(-1)
+                        }else{
+                            props.setKeyboardSelected(cell)
+                        }
+                    }
+
                 }}>
                     {cell}
-                    <span>{many[cell-1]}</span>
+                    <span>{9 - many[cell-1]}</span>
                 </div>
             </div>
         )
