@@ -75,6 +75,8 @@ export default function Board(props){
                 classList += " selected"
             }else if(cell.value == props.marked){
                 classList += " marked"
+            }else if(cell.wrong){
+                classList += " wrong"
             }
         }else{
             classList += " empty"

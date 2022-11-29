@@ -1,7 +1,6 @@
 
 
-function checkSolution(board){
-    //rows
+function checkLook(){
     for(let i=0; i<9; i++) {
         let count = [0, 0, 0, 0, 0, 0, 0, 0, 0]
         for(let j=0; j<9; j++) {
@@ -34,3 +33,6 @@ function checkSolution(board){
     //tpt
     
 }
+
+
+export { checkLook}

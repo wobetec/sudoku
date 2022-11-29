@@ -4,7 +4,10 @@ import Board from './board';
 import Keyboard from './keyboard';
 import GameOptions from './gameOptions';
 
-export default function Sudoku(){
+import games from "../../boards/games.json";
+
+
+export default function Sudoku(props){
 
     function getGame(matrix){
         let game = []
@@ -15,7 +18,7 @@ export default function Sudoku(){
                 let obj = {
                     value: null,
                     initial: true,
-                    wront: false,
+                    wrong: false,
                     subscribe: [0, 0, 0, 0, 0, 0, 0, 0, 0],
                     position: [i, j]
                 }
@@ -55,6 +58,30 @@ export default function Sudoku(){
         }
     }
 
+    function checkFull(game, main){
+        let wrong = []
+        for(let i = 0; i < 9; i++){
+            for(let j = 0; j < 9; j++){
+                if(game[i][j].value != main["full"][i][j]){
+                    wrong.push([i, j])
+                }
+            }
+        }
+        return wrong
+    }
+
+    function checkWrong(game){
+        for(let i = 0; i < 9; i++){
+            for(let j = 0; j < 9; j++){
+                if(game[i][j].wrong){
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    
     var initial = [
         [4, 7, 9, 0, 1, 2, 0, 0, 0],
         [0, 3, 0, 6, 7, 0, 0, 1, 0],
@@ -67,15 +94,40 @@ export default function Sudoku(){
         [8, 0, 1, 5, 2, 0, 4, 0, 0]
     ]
 
-
+    const [main, setMain] = useState(initial)
     const [game, setGame] = useState(getGame(initial))
     const [selected, setSelected] = useState([-1, -1])
     const [keyboardSelected, setKeyboardSelected] = useState(-1)
     const [subscribe, setSubscribe] = useState(false)
-
-    const marked = getMarked(game, selected, keyboardSelected)
-    console.log(selected)
+    const wrong = checkWrong(game)
     
+    const marked = getMarked(game, selected, keyboardSelected)
+    
+    useEffect(() => {
+            let gamesLevel = games[props.level]
+            let selectedGame = gamesLevel.list[Math.floor(Math.random() * gamesLevel.length)]
+            setMain(selectedGame)
+            setGame(getGame(selectedGame.initial))
+        }, [props.level])
+        
+        
+    useEffect(()=>{
+        let end = checkEnd(game)
+        if(end){
+            setSelected([-1, -1])
+            let wrongs = checkFull(game, main)
+            if(wrongs.length == 0){
+                props.setEnd(true)
+            }else if(!wrong){
+                let newGame = JSON.parse(JSON.stringify(game))
+                for(let i = 0; i < wrongs.length; i++){
+                    newGame[wrongs[i][0]][wrongs[i][1]].wrong = true
+                }
+                setGame(newGame)
+            }
+        }
+    }, [game])
+
     useEffect(()=>{
         function handle(e){
             if(/^[1-9]$/i.test(e.key)){
@@ -85,6 +137,7 @@ export default function Sudoku(){
                         newGame[selected[0]][selected[1]].value = null
                     }else{
                         newGame[selected[0]][selected[1]].value = e.key
+                        newGame[selected[0]][selected[1]].wrong = false
                     }
                     setGame(newGame)
                 }
@@ -92,7 +145,19 @@ export default function Sudoku(){
                 if(selected[0] != -1 && selected[1] != -1){
                     let newGame = JSON.parse(JSON.stringify(game))
                     newGame[selected[0]][selected[1]].value = null
+                    newGame[selected[0]][selected[1]].wrong = false
                     setGame(newGame)
+                }
+            }else if(e.key == "c"){
+                for(let i = 0; i < 9; i++){
+                    for(let j = 0; j < 9; j++){
+                        if(game[i][j].value == null){
+                            let newGame = JSON.parse(JSON.stringify(game))
+                            newGame[i][j].value = main["full"][i][j]
+                            setGame(newGame)
+                            break
+                        }
+                    }
                 }
             }
         }
@@ -107,7 +172,7 @@ export default function Sudoku(){
         <div className="Sudoku">
             <Board game={game} setGame={setGame} setSelected={setSelected} selected={selected} marked={marked} keyboardSelected={keyboardSelected} setKeyboardSelected={setKeyboardSelected}/>
             <div className="menu">
-                <GameOptions />
+                <GameOptions setLevel={props.setLevel} setEnd={props.setEnd}/>
                 <Keyboard game={game} selected={selected} keyboardSelected={keyboardSelected} setKeyboardSelected={setKeyboardSelected} subscribe={subscribe} setSubscribe={setSubscribe} />
             </div>
         </div>

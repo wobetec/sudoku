@@ -46,7 +46,6 @@ export default function Keyboard(props){
                         </div>
                     </div> 
                     <div className="numberField" onClick={(e)=>{
-                        console.log(props.subscribe)
                         if(props.subscribe){
                             props.setSubscribe(false)
                         }else{
