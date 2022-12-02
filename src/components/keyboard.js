@@ -2,9 +2,12 @@
 import {FaIgloo, FaPencilAlt} from "react-icons/fa"
 import {FiDelete} from "react-icons/fi"
 import {BiUndo} from "react-icons/bi"
+import {BsCheckLg} from "react-icons/bs"
+import { useContext } from "react";
+import GameContext from "../contexts/contextGame";
 
-export default function Keyboard(props){
-
+export default function Keyboard(){
+    const gameContext = useContext(GameContext)
 
     function getMany(game){
         let many = [0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -20,45 +23,57 @@ export default function Keyboard(props){
         return many
     }
 
-    var many = getMany(props.game)
+    var many = getMany(gameContext.game)
 
     var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     return (
-        <div className="Keyboard">
-            <div className="keyboard-numbers">
+        <div className="Keyboard keys">
+            <div className="keyboard-numbers keys">
                 { RowTpt(numbers.slice(0, 3)) }
                 { RowTpt(numbers.slice(3, 6)) }
                 { RowTpt(numbers.slice(6, 9)) }
             </div>
-            <div className="game-options">
-                <div className="row-tpt">
-                    <div className="numberField">
-                        <div className="number" onClick={(e)=>{
+            <div className="game-options keys">
+                <div className="row-tpt keys">
+                    <div className="numberField keys">
+                        <div className="keys number" onClick={(e)=>{
                             document.dispatchEvent(new KeyboardEvent("keydown", {"key": "Delete"}))
                         }}>
                             <FiDelete/>
                         </div>
                     </div>
-                    <div className="numberField">
-                        <div className="number">
+                    <div className="keys numberField">
+                        <div className="keys number" onClick={(e)=>{
+                            if(gameContext.back.length >= 3){
+                                let temp = gameContext.back.pop()
+                                gameContext.setGame(gameContext.back.pop())
+                            }
+                        }}>
                             <BiUndo/>
                         </div>
                     </div> 
-                    <div className="numberField" onClick={(e)=>{
-                        if(props.subscribe){
-                            props.setSubscribe(false)
+                    <div className="keys numberField"onClick={(e)=>{
+                            document.dispatchEvent(new KeyboardEvent("keydown", {"key": "v"}))
+                        }}>
+                        <div className="keys number">
+                            <BsCheckLg/>
+                        </div>
+                    </div> 
+                    <div className="keys numberField" onClick={(e)=>{
+                        if(gameContext.subscribe){
+                            gameContext.setSubscribe(false)
                         }else{
-                            props.setSubscribe(true)
+                            gameContext.setSubscribe(true)
                         }
                     }}> 
                         {
-                            (props.subscribe)?
-                            <div className="number selected">
+                            (gameContext.subscribe)?
+                            <div className="keys number selected">
                                 <FaPencilAlt/>
                             </div>
                             :
-                            <div className="number">
+                            <div className="keys number">
                                 <FaPencilAlt/>
                             </div>
                         }
@@ -71,7 +86,7 @@ export default function Keyboard(props){
     
     function RowTpt(three){
         return (
-            <div className="row-tpt">
+            <div className="keys row-tpt">
                 { NumberField(three[0]) }
                 { NumberField(three[1]) }
                 { NumberField(three[2]) }
@@ -82,22 +97,22 @@ export default function Keyboard(props){
 
     function NumberField(cell){
             
-        let classList = "number"
+        let classList = "keys number"
 
-        if(props.keyboardSelected == cell){
+        if(gameContext.keyboardSelected == cell){
             classList += " selected"
         }
         
         return (
-            <div className="numberField">
+            <div className="keys numberField">
                 <div className={classList} onClick={(e)=>{
-                    if(props.selected[0] != -1 && props.selected[1] != -1){
+                    if(gameContext.selected[0] != -1 && gameContext.selected[1] != -1){
                         document.dispatchEvent(new KeyboardEvent("keydown", {"key": cell}))
                     }else{
                         if(e.target.classList.contains("selected")){
-                            props.setKeyboardSelected(-1)
+                            gameContext.setKeyboardSelected(-1)
                         }else{
-                            props.setKeyboardSelected(cell)
+                            gameContext.setKeyboardSelected(cell)
                         }
                     }
 

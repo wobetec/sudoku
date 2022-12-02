@@ -103,6 +103,32 @@
                     .wrong
                         background-color: $color-circle-wrong  !important 
                         color: $color-background !important
+                    
+                    .subscribed
+                        display: flex
+                        flex-direction: column
+                        align-items: center
+                        justify-content: center
+
+                        .row-subscribe
+                            display: flex
+                            flex-direction: row
+                            
+                            $sub-radius: calc($number-radius / 4)
+                            .col-subscribe
+                                display: flex
+                                align-items: center
+                                justify-content: center
+                                border-radius: $sub-radius
+                                font-size: calc($sub-radius * 1.9) 
+                                width: calc($sub-radius * 2)
+                                height: calc($sub-radius * 2)
+
+                    .subscribed.selected, .subscribed.marked
+                        .row-subscribe
+                            .col-subscribe
+                                color: $color-background !important
+
 
 
 
@@ -128,7 +154,12 @@
             flex-direction: row
 
             .numberField
+                $number-radius: 20px
                 .number
+                    border-radius: calc($number-radius * 1.5)
+                    font-size: calc($number-radius * 1.8) 
+                    width: calc($number-radius * 3)
+                    height: calc($number-radius * 3)
                     * 
                         font-size: 12px
 
@@ -141,8 +172,16 @@
         .row-tpt
             display: flex
             flex-direction: row
-            width: 100%
             justify-content: space-between
+
+            .numberField
+
+                $number-radius: calc(41px / 3)
+                .number
+                    border-radius: calc($number-radius * 1.5)
+                    font-size: calc($number-radius * 1.8) 
+                    width: calc($number-radius * 3)
+                    height: calc($number-radius * 3)
 
     .numberField
         position: relative
@@ -150,18 +189,14 @@
         -ms-user-select: none
         user-select: none
 
-        $number-radius: 20px
         .number
             margin: 8px
             display: flex
             flex-direction: column
             align-items: center
             justify-content: center 
-            border-radius: calc($number-radius * 1.5)
-            font-size: calc($number-radius * 1.8) 
-            width: calc($number-radius * 3)
-            height: calc($number-radius * 3)
             border: 1px solid $color-circle-text
+            transition: 300ms    
 
         .selected
             background-color: $color-circle-selected !important
@@ -210,6 +245,16 @@
             font-size: calc($small-number-radius * 1.9) !important
             width: calc($small-number-radius * 2) !important
             height: calc($small-number-radius * 2) !important
+        
+        .subscribed
+            .row-subscribe
+                
+                $sub-radius: calc($small-number-radius / 4)
+                .col-subscribe 
+                    border-radius: $sub-radius !important
+                    font-size: calc($sub-radius * 1.9)  !important
+                    width: calc($sub-radius * 2) !important
+                    height: calc($sub-radius * 2) !important
 
     
     .GameOptions

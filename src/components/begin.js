@@ -1,14 +1,18 @@
-import {useState} from "react"
-import GameOptions from "./gameOptions"
 import Link from 'next/link'
+import { useContext } from "react"
+import GameOptions from "./gameOptions"
 
-export default function Begin(props) {
+import GlobalContext from "../contexts/contextGlobal"
+
+export default function Begin() {
+    const globalContext = useContext(GlobalContext)
+
     return (
         <div className="Begin">
             {
-                (props.level == null)?
+                (globalContext.level == null)?
                 <>
-                    <GameOptions setLevel={props.setLevel} setEnd={props.setEnd}/>
+                    <GameOptions/>
                 </>
                 :<>
                     <h1>Congratulations!</h1>
