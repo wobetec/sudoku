@@ -1,9 +1,6 @@
 import json
 from module import generate
 
-# adas = json.dumps(obj, ident=4)
-#with open("samples.json, ")
-
 FILE = "games.json"
 
 def addGame(difficulty, n=1):
@@ -42,7 +39,7 @@ def resetGames():
 
 if __name__ == '__main__':
     resetGames()
-    n = 10
+    n = 20
     addGame("easy", n)
     addGame("medium", n)
     addGame("hard", n)

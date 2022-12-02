@@ -1,5 +1,6 @@
 import Sudoku from "../src/components/game"
 import Begin from "../src/components/begin"
+import GlobalContext from "../src/contexts/contextGlobal" 
 
 import {useState, useEffect} from "react"
 

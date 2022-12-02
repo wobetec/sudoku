@@ -7,14 +7,14 @@ import GameOptions from './gameOptions';
 import games from "../../boards/games.json";
 
 
-export default function Sudoku(props){
+export default function Sudoku(props) {
 
-    function getGame(matrix){
+    function getGame(matrix) {
         let game = []
 
-        for(let i = 0; i < 9; i++){
+        for (let i = 0; i < 9; i++) {
             let now = []
-            for(let j = 0; j < 9; j++){
+            for (let j = 0; j < 9; j++) {
                 let obj = {
                     value: null,
                     initial: true,
@@ -23,9 +23,9 @@ export default function Sudoku(props){
                     position: [i, j]
                 }
 
-                if(matrix[i][j] == 0){
+                if (matrix[i][j] == 0) {
                     obj.initial = false
-                }else{
+                } else {
                     obj.value = matrix[i][j]
                 }
 
@@ -37,10 +37,10 @@ export default function Sudoku(props){
         return game
     }
 
-    function checkEnd(nowGame){
-        for(let i = 0; i < 9; i++){
-            for(let j = 0; j < 9; j++){
-                if(nowGame[i][j].value == null){
+    function checkEnd(nowGame) {
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (nowGame[i][j].value == null) {
                     return false
                 }
             }
@@ -49,20 +49,20 @@ export default function Sudoku(props){
     }
 
     function getMarked(game, selected, keyboardSelected) {
-        if(keyboardSelected != -1){
+        if (keyboardSelected != -1) {
             return keyboardSelected
-        }else if(selected[0] != -1 && selected[1] != -1){
+        } else if (selected[0] != -1 && selected[1] != -1) {
             return game[selected[0]][selected[1]].value
-        }else{
+        } else {
             return -1
         }
     }
 
-    function checkFull(game, main){
+    function checkFull(game, main) {
         let wrong = []
-        for(let i = 0; i < 9; i++){
-            for(let j = 0; j < 9; j++){
-                if(game[i][j].value != main["full"][i][j]){
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (game[i][j].value != main["full"][i][j]) {
                     wrong.push([i, j])
                 }
             }
@@ -70,18 +70,18 @@ export default function Sudoku(props){
         return wrong
     }
 
-    function checkWrong(game){
-        for(let i = 0; i < 9; i++){
-            for(let j = 0; j < 9; j++){
-                if(game[i][j].wrong){
+    function checkWrong(game) {
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (game[i][j].wrong) {
                     return true
                 }
             }
         }
         return false
     }
-    
-    
+
+
     var initial = [
         [4, 7, 9, 0, 1, 2, 0, 0, 0],
         [0, 3, 0, 6, 7, 0, 0, 1, 0],
@@ -99,28 +99,31 @@ export default function Sudoku(props){
     const [selected, setSelected] = useState([-1, -1])
     const [keyboardSelected, setKeyboardSelected] = useState(-1)
     const [subscribe, setSubscribe] = useState(false)
+    const [back, setBack] = useState([])
+
+
     const wrong = checkWrong(game)
-    
+
     const marked = getMarked(game, selected, keyboardSelected)
-    
+
     useEffect(() => {
-            let gamesLevel = games[props.level]
-            let selectedGame = gamesLevel.list[Math.floor(Math.random() * gamesLevel.length)]
-            setMain(selectedGame)
-            setGame(getGame(selectedGame.initial))
-        }, [props.level])
-        
-        
-    useEffect(()=>{
+        let gamesLevel = games[props.level]
+        let selectedGame = gamesLevel.list[Math.floor(Math.random() * gamesLevel.length)]
+        setMain(selectedGame)
+        setGame(getGame(selectedGame.initial))
+    }, [props.level])
+
+
+    useEffect(() => {
         let end = checkEnd(game)
-        if(end){
+        if (end) {
             setSelected([-1, -1])
             let wrongs = checkFull(game, main)
-            if(wrongs.length == 0){
+            if (wrongs.length == 0) {
                 props.setEnd(true)
-            }else if(!wrong){
+            } else if (!wrong) {
                 let newGame = JSON.parse(JSON.stringify(game))
-                for(let i = 0; i < wrongs.length; i++){
+                for (let i = 0; i < wrongs.length; i++) {
                     newGame[wrongs[i][0]][wrongs[i][1]].wrong = true
                 }
                 setGame(newGame)
@@ -128,30 +131,30 @@ export default function Sudoku(props){
         }
     }, [game])
 
-    useEffect(()=>{
-        function handle(e){
-            if(/^[1-9]$/i.test(e.key)){
-                if(selected[0] != -1 && selected[1] != -1){
+    useEffect(() => {
+        function handle(e) {
+            if (/^[1-9]$/i.test(e.key)) {
+                if (selected[0] != -1 && selected[1] != -1) {
                     let newGame = JSON.parse(JSON.stringify(game))
-                    if(newGame[selected[0]][selected[1]].value == e.key){
+                    if (newGame[selected[0]][selected[1]].value == e.key) {
                         newGame[selected[0]][selected[1]].value = null
-                    }else{
+                    } else {
                         newGame[selected[0]][selected[1]].value = e.key
                         newGame[selected[0]][selected[1]].wrong = false
                     }
                     setGame(newGame)
                 }
-            }else if(e.key == "Delete" || e.key == "Backspace"){
-                if(selected[0] != -1 && selected[1] != -1){
+            } else if (e.key == "Delete" || e.key == "Backspace") {
+                if (selected[0] != -1 && selected[1] != -1) {
                     let newGame = JSON.parse(JSON.stringify(game))
                     newGame[selected[0]][selected[1]].value = null
                     newGame[selected[0]][selected[1]].wrong = false
                     setGame(newGame)
                 }
-            }else if(e.key == "c"){
-                for(let i = 0; i < 9; i++){
-                    for(let j = 0; j < 9; j++){
-                        if(game[i][j].value == null){
+            } else if (e.key == "c") {
+                for (let i = 0; i < 9; i++) {
+                    for (let j = 0; j < 9; j++) {
+                        if (game[i][j].value == null) {
                             let newGame = JSON.parse(JSON.stringify(game))
                             newGame[i][j].value = main["full"][i][j]
                             setGame(newGame)
@@ -159,23 +162,36 @@ export default function Sudoku(props){
                         }
                     }
                 }
+            } else if (e.key == "Escape") {
+                setSelected([-1, -1])
+                setKeyboardSelected(-1)
+            }
+        }
+
+        function handlerClick(e) {
+            if (!e.target.classList.contains('number')) {
+                document.dispatchEvent(new KeyboardEvent("keydown", { "key": "Escape" }))
             }
         }
 
         document.addEventListener("keydown", handle)
+        document.addEventListener("click", handlerClick)
 
-        return ()=>document.removeEventListener("keydown", handle)
+        return () => {
+            document.removeEventListener("keydown", handle)
+            document.removeEventListener("click", handlerClick)
+        }
     }, [selected, game])
 
 
     return (
         <div className="Sudoku">
-            <Board game={game} setGame={setGame} setSelected={setSelected} selected={selected} marked={marked} keyboardSelected={keyboardSelected} setKeyboardSelected={setKeyboardSelected}/>
+            <Board game={game} setGame={setGame} setSelected={setSelected} selected={selected} marked={marked} keyboardSelected={keyboardSelected} setKeyboardSelected={setKeyboardSelected} />
             <div className="menu">
-                <GameOptions setLevel={props.setLevel} setEnd={props.setEnd}/>
+                <GameOptions setLevel={props.setLevel} setEnd={props.setEnd} />
                 <Keyboard game={game} selected={selected} keyboardSelected={keyboardSelected} setKeyboardSelected={setKeyboardSelected} subscribe={subscribe} setSubscribe={setSubscribe} />
             </div>
         </div>
     )
-    
+
 }

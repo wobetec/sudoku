@@ -1,26 +1,18 @@
 # Sudoku Generator Algorithm - www.101computing.net/sudoku-generator-algorithm/
-# Modified by wobetec
+# Modified by Wobetec
 from random import randint, shuffle
 import copy
 
-
 DIFFICIULTY = {
-    "easy":{
-        "attempts": 5,
-        "removed": 30
-    },  
-    "medium":{
-        "attempts": 3,
-        "removed": 60
-    },  
-    "hard":{
-        "attempts": 5,
-        "removed": 81
-    },  
+    "easy": {"attempts": 1},
+    "medium": {"attempts": 3},
+    "hard": {"attempts": 5},
 }
 
 
 counter = 1
+
+
 def generate(difficulty):
     global counter
     grid = [
@@ -35,10 +27,7 @@ def generate(difficulty):
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
     ]
 
-    game = {
-        "full":[],
-        "initial":[]
-    }
+    game = {"full": [], "initial": []}
 
     # A function to check if the grid is full
     def checkGrid(grid):
@@ -49,7 +38,6 @@ def generate(difficulty):
 
         # We have a complete grid!
         return True
-
 
     # A backtracking/recursive function to check all possible combinations of numbers until a solution is found
     def solveGrid(grid):
@@ -108,7 +96,6 @@ def generate(difficulty):
                                         return True
                 break
         grid[row][col] = 0
-
 
     numberList = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     # shuffle(numberList)
@@ -173,13 +160,16 @@ def generate(difficulty):
     # Generate a Fully Solved Grid
     fillGrid(grid)
 
+    # Save the full game for answer check
     game["full"] = copy.deepcopy(grid)
+
 
     # Start Removing Numbers one by one
 
     # A higher number of attempts will end up removing more numbers from the grid
     # Potentially resulting in more difficiult grids to solve!
-    attempts = 5
+    # The number of attempts is defined by previous parameters DIFFICIULTY
+    attempts = DIFFICIULTY[difficulty]["attempts"]
     counter = 1
     while attempts > 0:
         # Select a random cell that is not already empty
@@ -208,7 +198,7 @@ def generate(difficulty):
             # We could stop here, but we can also have another attempt with a different cell just to try to remove more numbers
             attempts -= 1
 
+    # Save the sudoku
     game["initial"] = copy.deepcopy(grid)
 
     return game
-
