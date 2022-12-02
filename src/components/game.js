@@ -89,7 +89,6 @@ export default function Sudoku() {
         let newGame = JSON.parse(JSON.stringify(game))
 
         if(value == null){
-            console.log("here")
             newGame[position[0]][position[1]].value = null
             newGame[position[0]][position[1]].subscribe = [0, 0, 0, 0, 0, 0, 0, 0, 0]
             newGame[position[0]][position[1]].thereIsSubscribe = false
@@ -181,8 +180,6 @@ export default function Sudoku() {
                 globalContext.setEnd(true)
             }
         }
-
-        console.log(back)
     }, [game])
 
      
@@ -219,8 +216,6 @@ export default function Sudoku() {
         }
 
         function handlerClick(e) {
-
-            console.log(e.target.tagName)
             if (!e.target.classList.contains('keys') && !["path", "svg"].includes(e.target.tagName)) {
                 document.dispatchEvent(new KeyboardEvent("keydown", { "key": "Escape" }))
             }
