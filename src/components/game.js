@@ -255,18 +255,19 @@ export default function Sudoku() {
                 setKeyboardSelected(-1)
                 setDel(false)
                 setSubscribe(false)
-            } else if (e.key == "c") { //developer only
-                for (let i = 0; i < 9; i++) {
-                    for (let j = 0; j < 9; j++) {
-                        if (game[i][j].value == null) {
-                            let newGame = JSON.parse(JSON.stringify(game))
-                            newGame[i][j].value = main["full"][i][j]
-                            setGame(newGame)
-                            break
-                        }
-                    }
-                }
-            }
+            } 
+            // else if (e.key == "c") { //developer only
+            //     for (let i = 0; i < 9; i++) {
+            //         for (let j = 0; j < 9; j++) {
+            //             if (game[i][j].value == null) {
+            //                 let newGame = JSON.parse(JSON.stringify(game))
+            //                 newGame[i][j].value = main["full"][i][j]
+            //                 setGame(newGame)
+            //                 break
+            //             }
+            //         }
+            //     }
+            // }
         }
 
         function handlerClick(e) {
