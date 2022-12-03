@@ -36,12 +36,23 @@ export default function Keyboard(){
             </div>
             <div className="game-options keys">
                 <div className="row-tpt keys">
-                    <div className="numberField keys">
-                        <div className="keys number" onClick={(e)=>{
-                            document.dispatchEvent(new KeyboardEvent("keydown", {"key": "Delete"}))
+                    <div className="numberField keys" onClick={(e)=>{
+                            if(gameContext.selected[0]!=-1){
+                                document.dispatchEvent(new KeyboardEvent("keydown", {"key": "Delete"}))
+                            }else{
+                                gameContext.setDel(!gameContext.del)
+                            }
                         }}>
-                            <FiDelete/>
-                        </div>
+                            {
+                            (gameContext.del)?
+                            <div className="keys number selected">
+                                <FiDelete/>
+                            </div>
+                            :
+                            <div className="keys number">
+                                <FiDelete/>
+                            </div>
+                        }
                     </div>
                     <div className="keys numberField">
                         <div className="keys number" onClick={(e)=>{
@@ -61,11 +72,8 @@ export default function Keyboard(){
                         </div>
                     </div> 
                     <div className="keys numberField" onClick={(e)=>{
-                        if(gameContext.subscribe){
-                            gameContext.setSubscribe(false)
-                        }else{
-                            gameContext.setSubscribe(true)
-                        }
+                        gameContext.setSubscribe(!gameContext.subscribe)
+                        
                     }}> 
                         {
                             (gameContext.subscribe)?

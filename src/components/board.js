@@ -77,6 +77,8 @@ export default function Board(){
             if(!cell.initial){
                 if(gameContext.keyboardSelected != -1 && gameContext.selected[0] == -1){
                     gameContext.functions.changeGame(gameContext.game, cell.position, gameContext.keyboardSelected, gameContext.subscribe)
+                }else if(gameContext.del){
+                    gameContext.functions.changeGame(gameContext.game, cell.position, null, gameContext.subscribe)
                 }else{
                     if(cell.position[0] == gameContext.selected[0] && cell.position[0] == gameContext.selected[0]){
                         gameContext.setKeyboardSelected(-1)

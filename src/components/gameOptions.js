@@ -10,9 +10,16 @@ export default function GameOptions() {
         globalContext.setLevel(e.target.value)
     }
 
+    let placeHolder = null
+    if(globalContext.level == null){
+        placeHolder = "Level"
+    }else{
+        placeHolder = globalContext.level
+    }
+
     return (
         <div className="GameOptions">
-            <select className="level" onChange={(e) => handlerLevel(e)} defaultValue="Level">
+            <select className="level" onChange={(e) => handlerLevel(e)} defaultValue={placeHolder}>
                 <option disabled value="Level">Level</option>
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>

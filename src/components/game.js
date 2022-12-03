@@ -100,6 +100,7 @@ export default function Sudoku() {
             } else {
                 newGame[position[0]][position[1]].value = value
                 newGame[position[0]][position[1]].wrong = false
+                newGame = delSubscribe(newGame, position)
             }
             newGame[position[0]][position[1]].subscribe = [0, 0, 0, 0, 0, 0, 0, 0, 0]
             newGame[position[0]][position[1]].thereIsSubscribe = false
@@ -115,6 +116,55 @@ export default function Sudoku() {
             }
         }
         setGame(newGame)
+    }
+
+    function getSubTpt(position){
+        let four = []
+        if(position[0] < 3){
+            four.push(0)
+            four.push(3)
+        }else if(position[0] < 6){
+            four.push(3)
+            four.push(6)
+        }else{
+            four.push(6)
+            four.push(9)
+        }
+        if(position[1] < 3){
+            four.push(0)
+            four.push(3)
+        }else if(position[1] < 6){
+            four.push(3)
+            four.push(6)
+        }else{
+            four.push(6)
+            four.push(9)
+        }
+
+        return four
+    }
+
+    function delSubscribe(game, position){
+        // check col
+        for(let i = 0; i < 9; i++){
+            game[i][position[1]].thereIsSubscribe = false
+            game[i][position[1]].subscribe = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        }
+        // check row
+        for(let i = 0; i < 9; i++){
+            game[position[1]][i].thereIsSubscribe = false
+            game[position[1]][i].subscribe = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        }
+        // check tpt
+        let four = getSubTpt(position)
+        for(let i = four[0]; i < four[1]; i++){
+            for(let j = four[2]; j < four[3]; j++){
+                game[i][j].thereIsSubscribe = false
+                game[i][j].subscribe = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+            }
+        }
+
+        return game
     }
 
     function checkIfFull(game){
@@ -173,7 +223,7 @@ export default function Sudoku() {
     useEffect(() => {
         let finished = checkIfFull(game)
 
-        setBack([...back.slice(-9), game])
+        setBack([...back.slice(-19), game])
 
         if(finished) {
             if(done(game, main)){
@@ -201,6 +251,10 @@ export default function Sudoku() {
                 setSubscribe(false)
             } else if (e.key == "v") {
                 checkWrongs(game, main)
+                setSelected([-1, -1])
+                setKeyboardSelected(-1)
+                setDel(false)
+                setSubscribe(false)
             } else if (e.key == "c") { //developer only
                 for (let i = 0; i < 9; i++) {
                     for (let j = 0; j < 9; j++) {
